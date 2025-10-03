@@ -1,32 +1,23 @@
 import { defineConfig } from 'vite';
 
-// Production configuration: Maximum optimization for smallest bundle size.
-// Key optimizations:
-// - Aggressive minification (terser with advanced options)
-// - Maximum tree-shaking (sideEffects: false assumptions)
-// - Smart chunking strategy to leverage browser caching
-// - Compression and size analysis
-// - Dead code elimination and unused import removal
-
 export default defineConfig({
   // Production mode enables tree-shaking by default
   mode: 'production',
   
   build: {
-    target: 'es2020', // Modern target for better optimization
-    minify: 'terser', // Use Terser for maximum compression
+    target: 'es2020',
+    minify: 'terser',
     
     // Terser options for aggressive minification
     terserOptions: {
       compress: {
-        drop_console: true,        // Remove console.log statements
-        drop_debugger: true,       // Remove debugger statements
-        dead_code: true,           // Remove unreachable code
-        unused: true,              // Remove unused variables/functions
-        collapse_vars: true,       // Collapse single-use variables
-        reduce_vars: true,         // Reduce variables to direct values
-        pure_funcs: ['console.log', 'console.info', 'console.debug'], // Mark as pure (removable)
-        passes: 2,                 // Multiple optimization passes
+        drop_console: true,
+        drop_debugger: true,
+        dead_code: true,
+        unused: true,
+        collapse_vars: true,
+        reduce_vars: true,
+        passes: 2,
       },
       mangle: {
         toplevel: true,            // Mangle top-level names
