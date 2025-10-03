@@ -8,9 +8,12 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "dev:raw": "vite --config vite.debug.config.ts",
-    "build:raw": "tsc && vite build --config vite.debug.config.ts"
+    "build:raw": "tsc && vite build --config vite.debug.config.ts",
+    "build:prod": "tsc && vite build --config vite.prod.config.ts",
+    "serve:prod": "npm run build:prod && vite preview"
   },
   "devDependencies": {
+    "terser": "^5.44.0",
     "typescript": "~5.8.3",
     "vite": "^7.1.7"
   },
