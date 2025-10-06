@@ -10,16 +10,18 @@
     "dev:raw": "vite --config vite.debug.config.ts",
     "build:raw": "tsc && vite build --config vite.debug.config.ts",
     "build:prod": "tsc && vite build --config vite.prod.config.ts",
-    "serve:prod": "npm run build:prod && vite preview"
+    "serve:prod": "vite preview --config vite.prod.config.ts",
+    "analyze:prod": "npm run build:prod && vite-bundle-visualizer --template treemap --open true"
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "terser": "^5.44.0",
     "typescript": "~5.8.3",
-    "vite": "^7.1.7"
+    "vite": "^7.1.7",
+    "vite-bundle-visualizer": "^1.2.1"
   },
   "dependencies": {
     "@babylonjs/core": "^8.29.2",
-    "@babylonjs/loaders": "^8.29.2",
-    "@babylonjs/lottie-player": "^8.29.1"
+    "@babylonjs/lottie-player": "^8.29.2"
   }
 }

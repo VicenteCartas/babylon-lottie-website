@@ -1,98 +1,39 @@
 import { defineConfig } from 'vite';
 
+// Option 2: Create separate chunks for lottie-player vs babylon core.
+// Assumes @babylonjs/loaders has been removed from dependencies.
 export default defineConfig({
-  // Production mode enables tree-shaking by default
-  mode: 'production',
-  
   build: {
     target: 'es2020',
     minify: 'terser',
-    
-    // Terser options for aggressive minification
     terserOptions: {
       compress: {
         drop_console: true,
         drop_debugger: true,
-        dead_code: true,
-        unused: true,
-        collapse_vars: true,
-        reduce_vars: true,
         passes: 2,
+        pure_getters: true,
+        module: true,
       },
       mangle: {
-        toplevel: true,            // Mangle top-level names
-        properties: {
-          regex: /^_/,             // Mangle properties starting with _
-        },
+        toplevel: true,
       },
       format: {
-        comments: false,           // Remove all comments
+        comments: false,
       },
     },
-    
-    // Rollup options for optimal chunking and tree-shaking
     rollupOptions: {
-      // Aggressive tree-shaking
       treeshake: {
-        moduleSideEffects: false,  // Assume no side effects for better tree-shaking
+        moduleSideEffects: false,
         propertyReadSideEffects: false,
         tryCatchDeoptimization: false,
       },
-      
       output: {
-        // Fix worker format issue by inlining dynamic imports
-        // Note: manualChunks is incompatible with inlineDynamicImports
-        inlineDynamicImports: true,
-        
-        // Optimized file naming for caching
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash][extname]',
-        
-        // Additional compression options
-        compact: true,
-        generatedCode: {
-          constBindings: true,     // Use const instead of var
-          objectShorthand: true,   // Use object shorthand
-          arrowFunctions: true,    // Use arrow functions
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return;
+          if (id.includes('@babylonjs/lottie-player')) return 'lottie-player';
+          if (id.includes('@babylonjs/core')) return 'babylon-core';
         },
       },
-    },
-    
-    // Bundle analysis and size limits
-    reportCompressedSize: true,
-    chunkSizeWarningLimit: 1000, // Warn for chunks > 1MB
-    
-    // Source maps for production debugging (optional - remove to save more space)
-    sourcemap: false,
-    
-    // CSS optimization
-    cssCodeSplit: true,          // Split CSS for better caching
-    cssMinify: 'lightningcss',   // Use Lightning CSS for faster/smaller CSS minification
-  },
-  
-  // Dependency optimization for production
-  optimizeDeps: {
-    // Include all dependencies to ensure they're pre-bundled optimally
-    include: [
-      '@babylonjs/core',
-      '@babylonjs/lottie-player', 
-      '@babylonjs/loaders'
-    ],
-  },
-  
-  // Additional production optimizations
-  define: {
-    // Remove development-only code
-    __DEV__: false,
-    'process.env.NODE_ENV': '"production"',
-  },
-  
-  // Experimental optimizations (if supported by your Vite version)
-  experimental: {
-    renderBuiltUrl(filename: string) {
-      // Custom URL handling for CDN deployment
-      return filename;
     },
   },
 });
