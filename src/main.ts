@@ -1,4 +1,4 @@
-import { LocalPlayer } from "@babylonjs/lottie-player/localPlayer";
+import { Player } from "@babylonjs/lottie-player/player";
 import type { RawLottieAnimation } from "@babylonjs/lottie-player/parsing/rawTypes";
 import { DecodeQspStringToObject } from "./utils";
 
@@ -14,7 +14,7 @@ export async function main(): Promise<void> {
 
     // File to render
     const filename = searchParams.get("file") || "./triangles_noParents_noCross.json";
-    const fileUrl = `./${filename}`;
+    const fileUrl = `http://localhost:4173/${filename}`;
 
     // Whether to use the file URL for the data or to parse the data in the devhost, defaults to true (use the file URL)
     const useUrlParam = searchParams.get("useurl");
@@ -44,7 +44,7 @@ export async function main(): Promise<void> {
     };
 
     // Create the player and play the animation
-    const player = new LocalPlayer();
+    const player = new Player();
     await player.playAnimationAsync({ container: div, animationSource: useUrl ? fileUrl : (animationData as RawLottieAnimation), variables, configuration });
 }
 

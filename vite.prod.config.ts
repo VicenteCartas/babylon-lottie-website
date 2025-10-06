@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 
-// Option 2: Create separate chunks for lottie-player vs babylon core.
-// Assumes @babylonjs/loaders has been removed from dependencies.
+// Clean production configuration with worker support for the Babylon Lottie Player.
 export default defineConfig({
   build: {
     target: 'es2020',
@@ -14,16 +13,18 @@ export default defineConfig({
         pure_getters: true,
         module: true,
       },
-      mangle: {
-        toplevel: true,
-      },
-      format: {
-        comments: false,
-      },
+      mangle: { toplevel: true },
+      format: { comments: false },
     },
     rollupOptions: {
       treeshake: {
-        moduleSideEffects: false,
+        moduleSideEffects: (id) => {
+          if (!id) return false;
+          if (id.includes('Sprites/spriteRenderer')) return true;
+          if (id.includes('Shaders/sprites')) return true;
+          if (id.includes('Engines/Extensions/engine.')) return true;
+          return false;
+        },
         propertyReadSideEffects: false,
         tryCatchDeoptimization: false,
       },
@@ -33,6 +34,14 @@ export default defineConfig({
           if (id.includes('@babylonjs/lottie-player')) return 'lottie-player';
           if (id.includes('@babylonjs/core')) return 'babylon-core';
         },
+      },
+    },
+  },
+  worker: {
+    format: 'es',
+    rollupOptions: {
+      output: {
+        inlineDynamicImports: true,
       },
     },
   },
