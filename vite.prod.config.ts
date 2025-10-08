@@ -9,7 +9,7 @@ export default defineConfig({
       compress: {
         drop_console: true,
         drop_debugger: true,
-        passes: 2,
+        passes: 4,
         pure_getters: true,
         module: true,
       },
@@ -18,22 +18,11 @@ export default defineConfig({
     },
     rollupOptions: {
       treeshake: {
-        moduleSideEffects: (id) => {
-          if (!id) return false;
-          if (id.includes('Sprites/spriteRenderer')) return true;
-          if (id.includes('Shaders/sprites')) return true;
-          if (id.includes('Engines/Extensions/engine.')) return true;
-          return false;
-        },
-        propertyReadSideEffects: false,
-        tryCatchDeoptimization: false,
+        preset: 'smallest',
+        moduleSideEffects: false,
       },
       output: {
-        manualChunks(id) {
-          if (!id.includes('node_modules')) return;
-          if (id.includes('@babylonjs/lottie-player')) return 'lottie-player';
-          if (id.includes('@babylonjs/core')) return 'babylon-core';
-        },
+        inlineDynamicImports: false,
       },
     },
   },
@@ -41,7 +30,7 @@ export default defineConfig({
     format: 'es',
     rollupOptions: {
       output: {
-        inlineDynamicImports: true,
+        inlineDynamicImports: false,
       },
     },
   },
