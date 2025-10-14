@@ -13,7 +13,7 @@ export async function main(): Promise<void> {
     const div = document.getElementById("main-div") as HTMLDivElement; // The player will be inside this div
 
     // File to render
-    const filename = searchParams.get("file") || "./triangles_noParents_noCross.json";
+    const filename = searchParams.get("file") || "triangles_noParents_noCross.json";
     const fileUrl = `http://localhost:4173/${filename}`;
 
     // Whether to use the file URL for the data or to parse the data in the devhost, defaults to true (use the file URL)

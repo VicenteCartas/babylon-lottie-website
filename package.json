@@ -21,7 +21,7 @@
     "vite-bundle-visualizer": "^1.2.1"
   },
   "dependencies": {
-    "@babylonjs/core": "^8.30.5",
-    "@babylonjs/lottie-player": "^8.30.5"
+    "@babylonjs/core": "^8.31.2",
+    "@babylonjs/lottie-player": "^8.31.2"
   }
 }
